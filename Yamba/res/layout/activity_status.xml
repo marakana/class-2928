@@ -11,20 +11,19 @@
     tools:context=".StatusActivity" >
 
     <TextView
+        style="@style/yamba_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/status_label"
-        android:textColor="@color/sea_blue"
-        android:textSize="36sp"
-        android:textStyle="bold" />
+        android:text="@string/status_label" />
 
     <TextView
         android:id="@+id/status_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:text="@string/status_count" />
+        android:text="@string/status_count"
+        android:textColor="@color/ok" />
 
     <EditText
         android:id="@+id/status_status"
@@ -34,16 +33,16 @@
         android:layout_weight="1"
         android:gravity="top|left"
         android:hint="@string/status_hint" />
-    
+
     <Button
         android:id="@+id/status_submit"
+        style="@style/yamba_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/button_bg"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
-        android:text="@string/status_submit"
-        android:textColor="@color/sea_blue" />
+        android:text="@string/status_submit" />
 
 </LinearLayout>
