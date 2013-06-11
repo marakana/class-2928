@@ -2,9 +2,11 @@
 <resources>
 
     <string name="app_name">Yamba</string>
-
     <string name="status_label">Status</string>
     <string name="status_count">140</string>
     <string name="status_hint">What\'s up?  (140 chars or less)</string>
     <string name="status_submit">Submit</string>
+    <string name="fail">Failed posting status!</string>
+    <string name="succeed">Status posted!</string>
+
 </resources>
