@@ -34,7 +34,7 @@
         android:layout_weight="1"
         android:gravity="top|left"
         android:hint="@string/status_hint" />
-
+    
     <Button
         android:id="@+id/status_submit"
         android:layout_width="wrap_content"
