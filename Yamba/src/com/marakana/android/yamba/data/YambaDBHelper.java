@@ -4,17 +4,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.marakana.android.yamba.YambaContract;
-
 class YambaDBHelper extends SQLiteOpenHelper {
     public static final String DATABASE = "yamba.db";
-    public static final int VERSION = 2;
+    public static final int VERSION = 4;
 
-    public static final String TABLE = YambaContract.Timeline.TABLE;
-    public static final String COL_ID = YambaContract.Timeline.Columns.ID;
-    public static final String COL_TIMESTAMP = YambaContract.Timeline.Columns.TIMESTAMP;
-    public static final String COL_USER = YambaContract.Timeline.Columns.USER;
-    public static final String COL_STATUS = YambaContract.Timeline.Columns.STATUS;
+    public static final String TABLE = "ytimeline";
+    public static final String COL_ID = "yid";
+    public static final String COL_TIMESTAMP = "ytimestamp";
+    public static final String COL_USER = "yuser";
+    public static final String COL_STATUS = "ystatus";
 
     public YambaDBHelper(Context context) {
         super(context, DATABASE, null, VERSION);

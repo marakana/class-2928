@@ -22,6 +22,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
+import com.marakana.android.yamba.YambaContract;
+
 
 /**
  *
@@ -30,6 +32,14 @@ import android.util.Log;
  */
 public class YambaProvider extends ContentProvider {
     public static final String TAG = "CP";
+
+    private static final ColumnMap COL_MAP_TIMELINE = new ColumnMap.Builder()
+        .addColumn(YambaContract.Timeline.Columns.ID, YambaDBHelper.COL_ID, ColumnMap.Type.LONG)
+        .addColumn(YambaContract.Timeline.Columns.TIMESTAMP, YambaDBHelper.COL_TIMESTAMP, ColumnMap.Type.LONG)
+        .addColumn(YambaContract.Timeline.Columns.USER, YambaDBHelper.COL_USER, ColumnMap.Type.STRING)
+        .addColumn(YambaContract.Timeline.Columns.STATUS, YambaDBHelper.COL_STATUS, ColumnMap.Type.STRING)
+        .build();
+
 
     private YambaDBHelper helper;
 
@@ -46,7 +56,14 @@ public class YambaProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri arg0, String[] arg1, String arg2, String[] arg3, String arg4) {
-        throw new UnsupportedOperationException("query not supported");
+        return getDb().query(
+                YambaDBHelper.TABLE,
+                new String[] { "max(" + YambaDBHelper.COL_TIMESTAMP + ")" },
+                null,
+                null,
+                null,
+                null,
+                null);
     }
 
     @Override
@@ -61,8 +78,10 @@ public class YambaProvider extends ContentProvider {
         SQLiteDatabase db = getDb();
         try {
             db.beginTransaction();
-            for (ContentValues val: vals) {
-                if (0 < db.insert(YambaDBHelper.TABLE, null, val)) { count++; }
+            for (ContentValues row: vals) {
+                if (0 < db.insert(YambaDBHelper.TABLE, null, COL_MAP_TIMELINE.translateCols(row))) {
+                    count++;
+                }
             }
             db.setTransactionSuccessful();
         }

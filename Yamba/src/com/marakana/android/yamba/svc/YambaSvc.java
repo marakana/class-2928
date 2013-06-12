@@ -24,6 +24,7 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -141,14 +142,21 @@ public class YambaSvc extends IntentService {
 
     private void processTimeline(List<Status> timeline) {
         List<ContentValues> statuses = new ArrayList<ContentValues>(timeline.size());
-        for (Status status: timeline) {
-            ContentValues vals = new ContentValues();
-            vals.put(YambaContract.Timeline.Columns.ID, Long.valueOf(status.getId()));
-            vals.put(YambaContract.Timeline.Columns.TIMESTAMP, Long.valueOf(status.getCreatedAt().getTime()));
-            vals.put(YambaContract.Timeline.Columns.USER,status.getUser());
-            vals.put(YambaContract.Timeline.Columns.STATUS, status.getMessage());
 
-            statuses.add(vals);
+        long mostRecentPost = getMostRecentPost();
+        Log.d(TAG, "posting after: " + mostRecentPost);
+
+        for (Status status: timeline) {
+            long t = status.getCreatedAt().getTime();
+            if (t > mostRecentPost) {
+                ContentValues vals = new ContentValues();
+                vals.put(YambaContract.Timeline.Columns.ID, Long.valueOf(status.getId()));
+                vals.put(YambaContract.Timeline.Columns.TIMESTAMP, Long.valueOf(t));
+                vals.put(YambaContract.Timeline.Columns.USER,status.getUser());
+                vals.put(YambaContract.Timeline.Columns.STATUS, status.getMessage());
+
+                statuses.add(vals);
+            }
         }
 
         if (0 < statuses.size()) {
@@ -156,6 +164,16 @@ public class YambaSvc extends IntentService {
                     YambaContract.Timeline.URI,
                     statuses.toArray(new ContentValues[statuses.size()]));
         }
+    }
+
+    private long getMostRecentPost() {
+        Cursor c =  getContentResolver().query(
+                YambaContract.Timeline.URI,
+                new String[] { YambaContract.Timeline.Columns.MAX_TIMESTAMP },
+                null,
+                null,
+                null);
+        return (c.moveToNext()) ? c.getLong(0) : Long.MIN_VALUE;
     }
 
     void postToast(int succ) {
