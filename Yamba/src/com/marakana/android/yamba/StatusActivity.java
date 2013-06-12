@@ -1,6 +1,5 @@
 package com.marakana.android.yamba;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -9,9 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.app.Activity;
-import com.marakana.android.yamba.clientlib.YambaClientException;
+import com.marakana.android.yamba.svc.YambaSvc;
 
 public class StatusActivity extends Activity {
     private static final String TAG = "STATUS";
@@ -19,39 +17,6 @@ public class StatusActivity extends Activity {
     private static final int MAX_CHARS = 140;
     private static final int WARN_CHARS = 10;
     private static final int ERROR_CHARS = 0;
-
-
-    private static class Poster extends AsyncTask<String, Void, Integer> {
-        private YambaApp ctxt;
-
-        public Poster(YambaApp ctxt) { this.ctxt = ctxt; }
-
-        @Override
-        protected Integer doInBackground(String... status) {
-            int succ = R.string.fail;
-            try {
-                ctxt.getClient().postStatus(status[0]);
-                succ = R.string.succeed;
-            }
-            catch (YambaClientException e) {
-                Log.w(TAG, "post failed", e);
-            }
-            return Integer.valueOf(succ);
-        }
-
-        @Override
-        protected void onCancelled() { done(R.string.fail); }
-
-        @Override
-        protected void onPostExecute(Integer result) { done(result.intValue()); }
-
-        private void done(int succ) {
-            poster = null;
-            Toast.makeText(ctxt, succ, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    static Poster poster;
 
     private int colorOk;
     private int colorWarn;
@@ -89,11 +54,6 @@ public class StatusActivity extends Activity {
         });
     }
 
-    @Override
-    protected void onPause() {
-        if (null != poster) { poster.cancel(true); }
-    }
-
     void updateCount() {
         int n = MAX_CHARS - statusView.getText().length();
         int color = colorOk;
@@ -104,14 +64,11 @@ public class StatusActivity extends Activity {
     }
 
     void post() {
-        if (null != poster) { return; }
-
         String status = statusView.getText().toString();
         if (TextUtils.isEmpty(status)) { return; }
 
         statusView.setText("");
 
-        poster = new Poster((YambaApp) getApplication());
-        poster.execute(status);
+        YambaSvc.post(this, status);
     }
 }
