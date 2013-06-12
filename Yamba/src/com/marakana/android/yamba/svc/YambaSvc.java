@@ -12,14 +12,16 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package com.marakana.android.yamba.svc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -29,6 +31,7 @@ import android.widget.Toast;
 
 import com.marakana.android.yamba.R;
 import com.marakana.android.yamba.YambaApp;
+import com.marakana.android.yamba.YambaContract;
 import com.marakana.android.yamba.clientlib.YambaClient.Status;
 import com.marakana.android.yamba.clientlib.YambaClientException;
 
@@ -137,8 +140,21 @@ public class YambaSvc extends IntentService {
     }
 
     private void processTimeline(List<Status> timeline) {
+        List<ContentValues> statuses = new ArrayList<ContentValues>(timeline.size());
         for (Status status: timeline) {
-            Log.d(TAG, "#" + status.getId() + " @" + status.getCreatedAt() + "-" + status.getUser() + ": " + status.getMessage());
+            ContentValues vals = new ContentValues();
+            vals.put(YambaContract.Timeline.Columns.ID, Long.valueOf(status.getId()));
+            vals.put(YambaContract.Timeline.Columns.TIMESTAMP, Long.valueOf(status.getCreatedAt().getTime()));
+            vals.put(YambaContract.Timeline.Columns.USER,status.getUser());
+            vals.put(YambaContract.Timeline.Columns.STATUS, status.getMessage());
+
+            statuses.add(vals);
+        }
+
+        if (0 < statuses.size()) {
+            getContentResolver().bulkInsert(
+                    YambaContract.Timeline.URI,
+                    statuses.toArray(new ContentValues[statuses.size()]));
         }
     }
 
