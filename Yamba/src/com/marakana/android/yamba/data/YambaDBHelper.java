@@ -20,7 +20,7 @@ class YambaDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(
+         db.execSQL(
                 "CREATE TABLE " + TABLE + "("
                         + COL_ID + " INTEGER PRIMARY KEY,"
                         + COL_TIMESTAMP + " INTEGER,"
