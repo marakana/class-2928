@@ -15,8 +15,7 @@
 */
 package com.marakana.android.yamba;
 
-import android.os.Bundle;
-import com.marakana.android.yamba.svc.YambaSvc;
+import android.app.Activity;
 
 
 /**
@@ -24,23 +23,9 @@ import com.marakana.android.yamba.svc.YambaSvc;
  * @version $Revision: $
  * @author <a href="mailto:blake.meike@gmail.com">G. Blake Meike</a>
  */
-public class TimelineActivity extends BaseActivity {
+public class BaseActivity extends Activity {
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        YambaSvc.stopPolling(this);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        YambaSvc.startPolling(this);
-    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timeline);
-    }
+
 }
