@@ -99,16 +99,19 @@ public class YambaProvider extends ContentProvider {
 
         qb.setTables(table);
         qb.setProjectionMap(PROJ_MAP_TIMELINE.getProjectionMap());
+        qb.setStrict(true);
 
         if (0 < pk) { qb.appendWhere(YambaDBHelper.COL_ID + "=" + pk); }
 
         Cursor c = qb.query(getDb(), proj, sel, selArgs, null, null, sort);
 
+        c.setNotificationUri(getContext().getContentResolver(), uri);
+
         return c;
     }
 
     @Override
-    public int bulkInsert(Uri arg0, ContentValues[] vals) {
+    public int bulkInsert(Uri uri, ContentValues[] vals) {
         int count = 0;
 
         SQLiteDatabase db = getDb();
@@ -123,6 +126,10 @@ public class YambaProvider extends ContentProvider {
         }
         finally {
             db.endTransaction();
+        }
+
+        if (0 < count) {
+            getContext().getContentResolver().notifyChange(uri, null);
         }
 
         Log.d(TAG, "bulk insert: " + count);

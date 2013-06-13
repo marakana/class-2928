@@ -77,18 +77,29 @@ public class YambaSvc extends IntentService {
     }
 
     public static void startPolling(Context ctxt) {
-        AlarmManager mgr = (AlarmManager) ctxt.getSystemService(Context.ALARM_SERVICE);
-        Intent i = new Intent(ctxt, YambaSvc.class);
-        i.putExtra(PARAM_OP, OP_POLL);
-        mgr.setRepeating(
+        Log.d(TAG, "start poller");
+        ((AlarmManager) ctxt.getSystemService(Context.ALARM_SERVICE))
+            .setRepeating(
                 AlarmManager.RTC,
                 System.currentTimeMillis() + 100,
                 POLL_INTERVAL,
-                PendingIntent.getService(
-                        ctxt,
-                        POLL_REQ,
-                        i,
-                        PendingIntent.FLAG_UPDATE_CURRENT));
+                createPollIntent(ctxt));
+    }
+
+    public static void stopPolling(Context ctxt) {
+        Log.d(TAG, "stop poller");
+        ((AlarmManager) ctxt.getSystemService(Context.ALARM_SERVICE))
+            .cancel( createPollIntent(ctxt));
+    }
+
+    private static PendingIntent createPollIntent(Context ctxt) {
+        Intent i = new Intent(ctxt, YambaSvc.class);
+        i.putExtra(PARAM_OP, OP_POLL);
+        return PendingIntent.getService(
+                ctxt,
+                POLL_REQ,
+                i,
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private Handler hdlr;
