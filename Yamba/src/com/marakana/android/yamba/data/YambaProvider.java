@@ -125,7 +125,7 @@ public class YambaProvider extends ContentProvider {
             db.endTransaction();
         }
 
-        Log.d(TAG, "Bulk insert: " + count);
+        Log.d(TAG, "bulk insert: " + count);
         return count;
     }
 

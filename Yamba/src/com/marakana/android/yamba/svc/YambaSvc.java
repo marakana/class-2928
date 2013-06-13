@@ -144,7 +144,7 @@ public class YambaSvc extends IntentService {
         List<ContentValues> statuses = new ArrayList<ContentValues>(timeline.size());
 
         long mostRecentPost = getMostRecentPost();
-        Log.d(TAG, "posting after: " + mostRecentPost);
+        Log.d(TAG, "processing after: " + mostRecentPost);
 
         for (Status status: timeline) {
             long t = status.getCreatedAt().getTime();
