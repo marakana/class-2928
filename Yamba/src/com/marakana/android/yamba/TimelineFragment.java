@@ -25,6 +25,7 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
@@ -89,6 +90,13 @@ public class TimelineFragment extends ListFragment  implements LoaderCallbacks<C
     @Override
     public void onLoaderReset(Loader<Cursor> c) {
         ((SimpleCursorAdapter) getListAdapter()).swapCursor(null);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Cursor c = (Cursor) getListView().getItemAtPosition(position);
+        String status = c.getString(c.getColumnIndex(YambaContract.Timeline.Columns.STATUS));
+        ((TimelineActivity) getActivity()).handleClick(status);
     }
 
     @Override
