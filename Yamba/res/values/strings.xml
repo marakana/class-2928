@@ -9,4 +9,11 @@
     <string name="fail">Failed posting status!</string>
     <string name="succeed">Status posted!</string>
 
+    <!-- menu -->
+    <string name="menu_timeline">timeline</string>
+    <string name="menu_status">status</string>
+    <string name="menu_about">about</string>
+    <string name="menu_prefs">prefs</string>
+    <string name="about">Yamba!\nWritten by:\n Bootcamp class of June 10, 2013</string>
+
 </resources>

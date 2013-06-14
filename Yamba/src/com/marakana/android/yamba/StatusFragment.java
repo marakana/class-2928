@@ -62,7 +62,7 @@ public class StatusFragment extends Fragment  {
 
         v.findViewById(R.id.status_submit).setOnClickListener(
                 new View.OnClickListener() {
-                    @Override public void onClick(View v) { post(); }
+                    @Override public void onClick(View view) { post(); }
                 });
         countView = (TextView) v.findViewById(R.id.status_count);
         statusView = (EditText) v.findViewById(R.id.status_status);
