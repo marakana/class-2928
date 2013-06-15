@@ -18,7 +18,6 @@ package com.marakana.android.yamba;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -35,6 +34,7 @@ public class BaseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -45,14 +45,16 @@ public class BaseActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("####", " item: " + item.getItemId());
         switch (item.getItemId()) {
             case android.R.id.home:
             case R.id.menu_timeline:
-                 sendIntent(TimelineActivity.class);
-                 break;
+                sendIntent(TimelineActivity.class);
+                break;
             case R.id.menu_status:
                 sendIntent(StatusActivity.class);
+                break;
+            case R.id.menu_prefs:
+                sendIntent(PrefsActivity.class);
                 break;
             case R.id.menu_about:
                 Toast.makeText(this, R.string.about, Toast.LENGTH_LONG).show();

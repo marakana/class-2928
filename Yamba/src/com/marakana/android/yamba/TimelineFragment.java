@@ -18,6 +18,7 @@ package com.marakana.android.yamba;
 import android.app.ListFragment;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -96,7 +97,10 @@ public class TimelineFragment extends ListFragment  implements LoaderCallbacks<C
     public void onListItemClick(ListView l, View v, int position, long id) {
         Cursor c = (Cursor) getListView().getItemAtPosition(position);
         String status = c.getString(c.getColumnIndex(YambaContract.Timeline.Columns.STATUS));
-        ((TimelineActivity) getActivity()).handleClick(status);
+
+        Intent i = new Intent(getActivity(), TimelineDetailActivity.class);
+        i.putExtra(TimelineDetailFragment.PARAM_TEXT, status);
+        startActivity(i);
     }
 
     @Override

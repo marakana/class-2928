@@ -8,6 +8,11 @@ import android.provider.BaseColumns;
 public class YambaContract {
     private YambaContract() { }
 
+    /* Permissions
+     *  android:readPermission="com.marakana.android.yamba.timeline.READ"
+     *  android:writePermission="com.marakana.android.yamba.timeline.WRITE" />
+     */
+
     public static final String AUTHORITY = "com.marakana.android.yamba.timeline";
 
     public static final Uri BASE_URI = new Uri.Builder()
